@@ -18,5 +18,12 @@ namespace MinhaPrimeiraApi.Controllers
         {
             return Ok(Produtos);
         }
+
+        [HttpPost]
+        public IActionResult Post(Produto produto)
+        {
+            Produtos.Add(produto);
+            return CreatedAtAction(nameof(Get), produto);
+        }
     }
 }
