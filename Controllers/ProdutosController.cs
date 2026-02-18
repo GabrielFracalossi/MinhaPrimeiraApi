@@ -1,29 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MinhaPrimeiraApi.Models;
+using MinhaPrimeiraApi.Services;
 
 namespace MinhaPrimeiraApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProdutosController : ControllerBase
+    public class ProdutosController(IProdutoService produtoService) : ControllerBase
     {
-        private static readonly List<Produto> Produtos = new()
-        {
-            new Produto { Id = 1, Nome = "Teclado", Preco = 150 },
-            new Produto { Id = 2, Nome = "Mouse", Preco = 80 }
-        };
-
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(Produtos);
+            var produtos = produtoService.ObterTodos();
+            return Ok(produtos);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var produto = produtoService.ObterPorId(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(produto);
         }
 
         [HttpPost]
         public IActionResult Post(Produto produto)
         {
-            Produtos.Add(produto);
-            return CreatedAtAction(nameof(Get), produto);
+            produtoService.Adicionar(produto);
+            return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
         }
     }
 }
