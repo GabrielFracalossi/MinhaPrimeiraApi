@@ -1,7 +1,10 @@
+using MinhaPrimeiraApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container (traditional controllers).
 builder.Services.AddControllers();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 // Add OpenAPI (Swagger).
 builder.Services.AddOpenApi();
@@ -20,4 +23,3 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
-
