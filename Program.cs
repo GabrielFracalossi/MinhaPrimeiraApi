@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using MinhaPrimeiraApi.Data;
 using MinhaPrimeiraApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add context to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container (traditional controllers).
 builder.Services.AddControllers();
