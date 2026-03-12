@@ -4,8 +4,8 @@ namespace MinhaPrimeiraApi.Services
 {
     public interface IProdutoService
     {
-        IEnumerable<Produto> ObterTodos();
-        Produto? ObterPorId(int id);
-        void Adicionar(Produto produto);
+        Task<IEnumerable<Produto>> ObterTodosAsync();
+        Task<Produto?> ObterPorIdAsync(int id);
+        Task AdicionarAsync(Produto produto);
     }
 }

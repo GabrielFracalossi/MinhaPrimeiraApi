@@ -1,28 +1,25 @@
-﻿using MinhaPrimeiraApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MinhaPrimeiraApi.Data;
+using MinhaPrimeiraApi.Models;
 
 namespace MinhaPrimeiraApi.Services
 {
-    public class ProdutoService : IProdutoService
+    public class ProdutoService(ApplicationDbContext context) : IProdutoService
     {
-        private static readonly List<Produto> Produtos = new()
+        public async Task<IEnumerable<Produto>> ObterTodosAsync()
         {
-          new Produto { Id = 1, Nome = "Teclado", Preco = 150 },
-          new Produto { Id = 2, Nome = "Mouse", Preco = 80 }
-        };
-
-        public IEnumerable<Produto> ObterTodos()
-        {
-            return Produtos;
+            return await context.Produtos.ToListAsync();
         }
 
-        public Produto? ObterPorId(int id)
+        public async Task<Produto?> ObterPorIdAsync(int id)
         {
-            return Produtos.FirstOrDefault(p => p.Id == id);
+            return await context.Produtos.FindAsync(id);
         }
 
-        public void Adicionar(Produto produto)
+        public async Task AdicionarAsync(Produto produto)
         {
-            Produtos.Add(produto);
+            context.Produtos.Add(produto);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -9,16 +9,16 @@ namespace MinhaPrimeiraApi.Controllers
     public class ProdutosController(IProdutoService produtoService) : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var produtos = produtoService.ObterTodos();
+            var produtos = await produtoService.ObterTodosAsync();
             return Ok(produtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var produto = produtoService.ObterPorId(id);
+            var produto = await produtoService.ObterPorIdAsync(id);
             if (produto == null)
             {
                 return NotFound();
@@ -28,9 +28,9 @@ namespace MinhaPrimeiraApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(Produto produto)
+        public async Task<IActionResult> Post(Produto produto)
         {
-            produtoService.Adicionar(produto);
+            await produtoService.AdicionarAsync(produto);
             return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
         }
     }
